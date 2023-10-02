@@ -1,0 +1,25 @@
+{% load static %}
+<html>
+
+<head>
+    <title>LITReview</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Croissant+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="{% static 'images/logo.png'%}">
+    </header>
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+    <footer>{% if user.is_authenticated %}
+        <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
+        {% endif %}
+    </footer>
+</body>
+
+</html>

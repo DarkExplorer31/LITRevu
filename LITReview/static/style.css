@@ -1,0 +1,51 @@
+/*Define all site properties*/
+
+body {
+    font-family: 'Croissant One', cursive;
+    background-image: url("https://img.freepik.com/photos-premium/texture-papier-leger-espace-vide-vieux-parchemin-comme-arriere-plan_84485-2068.jpg");
+}
+
+.logo {
+    width: 50%;
+    height: 20%;
+    border: 2px solid;
+    border-radius: 2em;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+footer {
+    text-align: right;
+}
+
+/*Define login properties*/
+.login {
+    text-align: center;
+}
+
+.login_error {
+    color: red;
+}
+
+/*Define signup properties*/
+h2 {
+    font-size: 2.3em;
+    text-align: center;
+}
+
+main {
+    text-align: center;
+}
+
+form {
+    text-align: justify;
+    padding: 1em;
+}
+
+form p {
+    margin: 5px;
+}

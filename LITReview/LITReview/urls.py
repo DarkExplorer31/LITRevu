@@ -1,5 +1,5 @@
 """
-URL configuration for LITRevu project.
+URL configuration for LITReview project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -16,7 +16,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
+import authentication.views
+import review.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", authentication.views.LoginPageView.as_view(), name="login"),
+    path(
+        "logout/",
+        LogoutView.as_view(next_page="login"),
+        name="logout",
+    ),
+    path("home/", review.views.HomePage.as_view(), name="home"),
+    path(
+        "signup/", authentication.views.SignupPageView.as_view(), name="signup"
+    ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )
