@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if not ticket_id %}
+<h2>Créer un Ticket</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ ticket_form.as_p }}
+</form>
+{%else%}
+{% if user == ticket.user %}
+<h2>Création d'une réponse au ticket: "{{ticket.title}}" écrit par vous</h2>
+{%else%}
+<h2>Création d'une réponse au ticket: "{{ticket.title}}" écrit par {{ticket.user}}</h2>
+{%endif%}
+<p>Descrition: {{ticket.description}}</p>
+{%endif%}
+{% if object %}
+<h2>Modifier la critique: {{object.headline}}</h2>
+{%else%}
+<h2>Créer la critique</h2>
+{%endif%}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ review_form.as_p }}
+    <button type="submit">Publier</button>
+</form>
+{% endblock content %}

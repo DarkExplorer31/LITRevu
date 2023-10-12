@@ -24,7 +24,11 @@ import review.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", authentication.views.LoginPageView.as_view(), name="login"),
+    path(
+        "",
+        authentication.views.LoginPageView.as_view(),
+        name="login",
+    ),
     path(
         "logout/",
         LogoutView.as_view(next_page="login"),
@@ -34,9 +38,49 @@ urlpatterns = [
     path(
         "signup/", authentication.views.SignupPageView.as_view(), name="signup"
     ),
+    # Ticket management
+    path(
+        "ticket/creation/",
+        review.views.TicketCreation.as_view(),
+        name="ticket_creation",
+    ),
+    path(
+        "ticket/update/<int:pk>/",
+        review.views.TicketUpdate.as_view(),
+        name="ticket_update",
+    ),
+    path(
+        "ticket/delete/<int:pk>/",
+        review.views.DeleteTicket.as_view(),
+        name="delete_ticket",
+    ),
+    # Review management
+    path(
+        "review/creation/?ticket=<int:ticket_id>/",
+        review.views.ReviewOnlyCreation.as_view(),
+        name="review_only_creation",
+    ),
+    path(
+        "review/creation/",
+        review.views.ReviewWithTicketCreation.as_view(),
+        name="review_with_ticket_creation",
+    ),
+    path(
+        "review/update/<int:pk>/",
+        review.views.ReviewUpdate.as_view(),
+        name="review_update",
+    ),
+    path(
+        "review/delete/<int:pk>/",
+        review.views.DeleteReview.as_view(),
+        name="review_delete",
+    ),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )
+
+handler404 = "review.views.error_404"
+handler500 = "review.views.error_500"

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Vous confirmer la validation de la suppression du ticket: "{{ object.title }}"?</p>
+    {{ form }}
+    <button type="submit" value="Confirm">Supprimer</button>
+</form>
+{% endblock content %}
