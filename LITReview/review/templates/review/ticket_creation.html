@@ -10,4 +10,9 @@
     {{ form.as_p }}
     <button type="submit">Publier</button>
 </form>
+{% if object and user == object.user %}
+<p>Ticket créer le {{object.time_created}} par vous</p>
+{%else%}
+<p>Ticket créer le {{object.time_created}} par {{object.user}}</p>
+{%endif%}
 {% endblock content %}

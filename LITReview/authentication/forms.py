@@ -15,9 +15,7 @@ class SignupForm(UserCreationForm):
         model = get_user_model()
         fields = [
             "username",
-            "password",
             "email",
             "first_name",
             "last_name",
-            "quote",
         ]

@@ -49,3 +49,9 @@ form {
 form p {
     margin: 5px;
 }
+
+.main_menu p {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}

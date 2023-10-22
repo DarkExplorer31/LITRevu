@@ -20,3 +20,7 @@ class CreateReview(forms.ModelForm):
     class Meta:
         model = models.Review
         fields = ["rating", "headline", "body"]
+
+
+class UserSearching(forms.Form):
+    query = forms.CharField(label="Recherche d'utilisateurs", max_length=100)

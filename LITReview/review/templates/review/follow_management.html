@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Gérer vos abonnements</h2>
+    {% if following %}
+        {% for follow in following %}
+            <li>{{ follow.followed_user.username }}</li>
+            <li>Dernière connexion: {{ follow.followed_user.last_login }}</li>
+            <li>Inscription: {{ follow.followed_user.date_joined }}</li>
+            <form method="post"
+                  action="{% url 'unfollow_user' follow.followed_user.id %}">
+                {% csrf_token %}
+                <button type="submit">Se désabonner</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <h3>Vous n'êtes abonné à aucun utilisateur</h3>
+        <p>
+            <a href="{% url 'searching_user' %}">Rechercher un utilisateur</a>
+        </p>
+    {% endif %}
+    <h2>Visualisé vos abonné</h2>
+    {% if followers %}
+        {% for follow in followers %}
+            <li>{{ user.username }}</li>
+            <li>Dernière connexion: {{ user.last_login }}</li>
+            <li>Inscription: {{ user.date_joined }}</li>
+        {% endfor %}
+    {% else %}
+        <h3>Vous n'avez aucun abonné pour le moment</h3>
+    {% endif %}
+{% endblock content %}

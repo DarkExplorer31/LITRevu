@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Rechercher un utilisateur</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Rechercher</button>
+    </form>
+    <button>
+        <a href="{% url 'home' %}">Retourner à la page d'acceuil</a>
+    </button>
+    <h3>Résultat(s) de la recherche :</h3>
+    <!--Renvoyer une liste de users ()liste de dico-->
+    {% if users %}
+        <ul class="users">
+            {% for user in users %}
+                <li>{{ user.username }}</li>
+                <li>Dernière connexion: {{ user.last_login }}</li>
+                <li>Inscription: {{ user.date_joined }}</li>
+                {% if is_following %}
+                    {% for connection in is_following %}
+                        {% if connection.followed_user.username == user.username %}
+                            <form method="post"
+                                  action="{% url 'unfollow_user' connection.followed_user.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Se désabonner</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'follow_user' user.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Suivre</button>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <form method="post" action="{% url 'follow_user' user.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Suivre</button>
+                    </form>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun utilisateur trouvé</p>
+    {% endif %}
+{% endblock content %}

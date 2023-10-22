@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.views.generic import View
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
 from . import forms
 
 
@@ -51,7 +56,7 @@ class SignupPageView(View):
         )
 
     def post(self, request):
-        form = self.form_class()
+        form = self.form_class(request.POST)
         message = ""
         if form.is_valid():
             user = form.save()
@@ -63,3 +68,9 @@ class SignupPageView(View):
             self.template_name,
             context={"form": form, "message": message},
         )
+
+
+class ChangePassword(LoginRequiredMixin, PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy("home")
+    template_name = "authentication/password_change.html"

@@ -24,6 +24,8 @@ import review.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("home/", review.views.HomePage.as_view(), name="home"),
+    # Authentication management
     path(
         "",
         authentication.views.LoginPageView.as_view(),
@@ -34,9 +36,13 @@ urlpatterns = [
         LogoutView.as_view(next_page="login"),
         name="logout",
     ),
-    path("home/", review.views.HomePage.as_view(), name="home"),
     path(
         "signup/", authentication.views.SignupPageView.as_view(), name="signup"
+    ),
+    path(
+        "change_password/",
+        authentication.views.ChangePassword.as_view(),
+        name="change_password",
     ),
     # Ticket management
     path(
@@ -74,6 +80,27 @@ urlpatterns = [
         "review/delete/<int:pk>/",
         review.views.DeleteReview.as_view(),
         name="review_delete",
+    ),
+    # User management
+    path(
+        "searching_user/",
+        review.views.SearchUser.as_view(),
+        name="searching_user",
+    ),
+    path(
+        "follow_user/<int:user_id_to_follow>/",
+        review.views.FollowUser.as_view(),
+        name="follow_user",
+    ),
+    path(
+        "unfollow_user/<int:user_id_to_unfollow>/",
+        review.views.UnfollowUser.as_view(),
+        name="unfollow_user",
+    ),
+    path(
+        "follows_management/",
+        review.views.FollowersManagement.as_view(),
+        name="follows_management",
     ),
 ]
 
