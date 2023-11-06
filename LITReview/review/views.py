@@ -1,4 +1,5 @@
 from itertools import chain
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View
@@ -22,21 +23,23 @@ class HomePage(LoginRequiredMixin, View):
         user_reviews = review_models.Review.objects.filter(user=self.user)
         user_tickets = review_models.Ticket.objects.filter(user=self.user)
         followers = review_models.UserFollows.objects.filter(user=self.user)
+        # make the flux with reviews/tickets from user and all followed users
         for follower in followers:
             follower_tickets = review_models.Ticket.objects.filter(
-                user=follower
+                user=follower.followed_user
             )
             user_tickets = user_tickets | follower_tickets
-            follower_reviews = review_models.Ticket.objects.filter(
-                user=follower
+            follower_reviews = review_models.Review.objects.filter(
+                user=follower.followed_user
             )
             user_reviews = user_reviews | follower_reviews
-        user_tickets = user_tickets.annotate(
-            content_type=Value("TICKET", models.CharField())
-        )
         user_reviews = user_reviews.annotate(
             content_type=Value("REVIEW", models.CharField())
         )
+        # finally, exclude potentially duplicated tickets
+        user_tickets = user_tickets.annotate(
+            content_type=Value("TICKET", models.CharField())
+        ).exclude(id__in=[review.ticket.id for review in user_reviews])
         posts = sorted(
             chain(user_reviews, user_tickets),
             key=lambda post: post.time_created,
@@ -47,6 +50,7 @@ class HomePage(LoginRequiredMixin, View):
             self.template_name,
             context={
                 "posts": posts,
+                "stars": [1, 2, 3, 4, 5],
             },
         )
 
@@ -71,11 +75,21 @@ class TicketUpdate(LoginRequiredMixin, UpdateView):
     form_class = forms.CreateTicket
     success_url = reverse_lazy("home")
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if request.user == self.object.user:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
     def form_valid(self, form):
-        ticket = form.save(commit=False)
-        ticket.user_id = self.request.user.id
-        ticket.save()
-        return super().form_valid(form)
+        if self.request.user == self.object.user:
+            ticket = form.save(commit=False)
+            ticket.user_id = self.request.user.id
+            ticket.save()
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied()
 
 
 class DeleteTicket(LoginRequiredMixin, DeleteView):
@@ -83,44 +97,60 @@ class DeleteTicket(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("home")
     template_name = "review/ticket_delete_confirm.html"
 
+    def get(self, request, *args, **kwargs):
+        review = self.get_object()
+        if request.user == review.user:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
 
 # Review views
 class ReviewWithTicketCreation(LoginRequiredMixin, View):
     template_name = "review/review_creation.html"
-    review_form = forms.CreateReview
-    ticket_form = forms.CreateTicket
+    form = forms.CreateTicketReviewForm
 
     def get(self, request):
-        ticket_form = self.ticket_form()
-        review_form = self.review_form()
+        review_with_ticket_form = self.form()
         return render(
             request,
             self.template_name,
-            context={
-                "ticket_form": ticket_form,
-                "review_form": review_form,
-            },
+            context={"review_with_ticket_form": review_with_ticket_form},
         )
 
     def post(self, request):
-        ticket_form = self.ticket_form(request.POST, request.FILES)
-        review_form = self.review_form(request.POST)
-        if all([review_form.is_valid(), ticket_form.is_valid()]):
-            ticket_valid = ticket_form.save(commit=False)
-            review_valid = review_form.save(commit=False)
-            ticket_valid.user_id = self.request.user.id
-            review_valid.user_id = self.request.user.id
-            ticket_valid.save()
-            review_valid.save()
+        review_with_ticket_form = self.form(request.POST, request.FILES)
+        if review_with_ticket_form.is_valid():
+            title = review_with_ticket_form.cleaned_data["title"]
+            description = review_with_ticket_form.cleaned_data["description"]
+            image = review_with_ticket_form.cleaned_data["image"]
+            rating = review_with_ticket_form.cleaned_data["rating"]
+            headline = review_with_ticket_form.cleaned_data["headline"]
+            body = review_with_ticket_form.cleaned_data["body"]
+
+            ticket = review_models.Ticket(
+                title=title,
+                description=description,
+                image=image,
+                user=request.user,
+            )
+            ticket.save()
+
+            review = review_models.Review(
+                rating=rating,
+                headline=headline,
+                body=body,
+                user=request.user,
+                ticket=ticket,
+            )
+            review.save()
+
             return redirect("home")
         else:
             return render(
                 request,
                 self.template_name,
-                context={
-                    "ticket_form": ticket_form,
-                    "review_form": review_form,
-                },
+                context={"review_with_ticket_form": review_with_ticket_form},
             )
 
 
@@ -168,17 +198,34 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
     form_class = forms.CreateReview
     success_url = reverse_lazy("home")
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if request.user == self.object.user:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
+
     def form_valid(self, form):
-        review = form.save(commit=False)
-        review.user_id = self.request.user.id
-        review.save()
-        return super().form_valid(form)
+        if self.request.user == self.object.user:
+            review = form.save(commit=False)
+            review.user_id = self.request.user.id
+            review.save()
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied()
 
 
 class DeleteReview(LoginRequiredMixin, DeleteView):
     model = review_models.Review
     success_url = reverse_lazy("home")
     template_name = "review/review_delete_confirm.html"
+
+    def get(self, request, *args, **kwargs):
+        review = self.get_object()
+        if request.user == review.user:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied()
 
 
 # User and his followers
@@ -249,8 +296,12 @@ class FollowersManagement(LoginRequiredMixin, View):
 
 # Response error
 def error_404(request, exception):
-    return render(request, "review/error_404.html")
+    return render(request, "review/error_404.html", status=404)
 
 
 def error_500(request):
-    return render(request, "review/error_500.html")
+    return render(request, "review/error_500.html", status=500)
+
+
+def error_403(request, exception):
+    return render(request, "review/error_403.html", status=403)

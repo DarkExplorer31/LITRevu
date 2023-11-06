@@ -1,81 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Page d'acceuil: la page d'actualité de votre profil</h2>
-    <nav class="main_menu">
-        {% if user.is_authenticated %}
-            <p>
-                <a href="{% url 'searching_user' %}">Rechercher un utilisateur</a>
-            </p>
-            <p>
-                <a href="{% url 'follows_management' %}">Gérer vos abonnements</a>
-            </p>
-            <p>
-                <a href="{% url 'ticket_creation' %}">Créer un ticket</a>
-            </p>
-            <p>
-                <a href="{% url 'review_with_ticket_creation' %}">Créer une Critique</a>
-            </p>
-            <p>
-                <a href="{% url 'change_password' %}">Changer votre mot de passe</a>
-            </p>
-        {% endif %}
-    </nav>
+    <h1>Page d'accueil: la page d'actualité de votre profil</h1>
     {% if posts %}
+        <h2 class="home_title">Vos posts</h2>
         {% for post in posts %}
             {% if post.content_type == 'REVIEW' %}
-                {% if post.ticket %}
-                    <p class="ticket_title">{{ post.ticket.title }}</p>
-                    <p class="ticket_description">{{ post.ticket.description }}</p>
-                    <p class="ticket_creation_date">{{ post.ticket.time_created }}</p>
-                    {% if image %}<img src="{{ post.ticket.image.url }}">{% endif %}
-                    {% if user == post.ticket.user %}
-                        <p class="ticket_author">Ticket émit par vous</p>
-                        <button type="button">
-                            <a href="{% url 'ticket_update' post.ticket.id %}">Modifier le ticket</a>
-                        </button>
-                        <button type="button">
-                            <a href="{% url 'delete_ticket' post.ticket.id %}">Supprimer le ticket</a>
-                        </button>
-                    {% else %}
-                        <p class="ticket_author">Ticket émit par {{ post.ticket.user }}</p>
-                    {% endif %}
-                {% endif %}
-                <p class="review_rating">{{ post.rating }}</p>
-                <p class="review_headline">{{ post.headline }}</p>
-                <p class="review_body">{{ post.body }}</p>
-                {% if user == post.user %}
-                    <p class="post.user">Critique émise par vous</p>
-                    <button type="button">
-                        <a href="{% url 'review_update' post.id %}">Modifier la critique</a>
-                    </button>
-                    <button type="button">
-                        <a href="{% url 'review_delete' post.id %}">Supprimer la critique</a>
-                    </button>
-                {% else %}
-                    <p class="post.user">Critique émise par {{ post.user }}</p>
-                {% endif %}
-            {% elif post.content_type == 'TICKET' and post.id not in post.content_type == 'REVIEW' %}
-                <p class="ticket_title">{{ post.title }}</p>
-                <p class="ticket_description">{{ post.description }}</p>
-                <p class="ticket_creation_date">{{ post.time_created }}</p>
-                {% if image %}<img src="{{ post.image.url }}">{% endif %}
-                {% if user == post.user %}
-                    <p class="ticket_author">Ticket émit par vous</p>
-                    <button type="button">
-                        <a href="{% url 'ticket_update' post.id %}">Modifier le ticket</a>
-                    </button>
-                    <button type="button">
-                        <a href="{% url 'delete_ticket' post.id %}">Supprimer le ticket</a>
-                    </button>
-                {% else %}
-                    <p class="ticket_author">Ticket émit par {{ post.user }}</p>
-                {% endif %}
-                <button type="button">
-                    <a href="{% url 'review_only_creation' post.id %}">Répondre à ce ticket</a>
-                </button>
+                {% include 'review/partials/review_snippet.html' with review=post %}
+            {% elif post.content_type == 'TICKET' %}
+                {% include 'review/partials/ticket_snippet.html' with ticket=post %}
             {% endif %}
         {% endfor %}
     {% else %}
-        <h3>Vous n'avez pas encore de fil d'actualité</h3>
+        <h2>Vous n'avez pas encore de fil d'actualité</h2>
     {% endif %}
 {% endblock content %}

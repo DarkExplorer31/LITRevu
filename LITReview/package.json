@@ -1,0 +1,23 @@
+{
+  "name": "litreview",
+  "version": "1.0.0",
+  "description": "style package",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch ./static/sass/main.scss:./static/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "DarkExplorer31",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DarkExplorer31/LITRevu/issues"
+  },
+  "homepage": "https://github.com/DarkExplorer31/LITRevu#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.2"
+  }
+}

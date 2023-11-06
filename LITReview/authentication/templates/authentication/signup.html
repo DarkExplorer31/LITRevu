@@ -1,12 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Inscription</h2>
-{% if form.errors %}
-{{ form.errors }}
-{% endif %}
-<form method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="submit">S'inscrire</button>
-</form>
+    <h1>Inscription</h1>
+    <section class="signup">
+        {% if form.errors %}{{ form.errors }}{% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <p>Nom d'utilisateur</p>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <p>Mot de passe</p>
+                {{ form.password }}
+            </div>
+            <div class="form-group">
+                <p>Confirmation du mot de passe</p>
+                {{ form.password2 }}
+            </div>
+            <div class="form-group">
+                <p>Email</p>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <p>Prénom</p>
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                <p>Nom</p>
+                {{ form.last_name }}
+            </div>
+            <button class="btn btn-primary" type="submit">S'inscrire</button>
+        </form>
+    </section>
 {% endblock content %}

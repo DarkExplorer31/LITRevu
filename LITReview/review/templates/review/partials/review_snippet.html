@@ -1,0 +1,53 @@
+<section class="review_element">
+    {% if user == review.user and review.user == review.ticket.user %}
+        <h2 class="reply">Vous avez publié une critique à votre ticket</h2>
+    {% elif user == review.user and review.user != review.ticket.user %}
+        <h2 class="reply">Vous avez publié une critique</h2>
+    {% else %}
+        <h2 class="reply">{{ review.user }} a publié une critique à ce ticket</h2>
+    {% endif %}
+    <p class="review_creation_date">{{ review.time_created }}</p>
+    <span class="stars_container">
+        <p class="review_headline">{{ review.headline }}</p>
+        {% for star in stars %}
+            {% if star <= review.rating %}
+                <img alt="une étoile"
+                     src="https://png.pngtree.com/png-vector/20220926/ourmid/pngtree-shiny-gold-star-clipart-illustration-design-png-image_6216956.png"
+                     class="star">
+            {% else %}
+                <img lt="absence d'étoile"
+                     src="https://static.vecteezy.com/system/resources/previews/018/978/954/non_2x/star-logo-transparent-free-png.png"
+                     class="star_empty">
+            {% endif %}
+        {% endfor %}
+    </span>
+    <p class="review_body">{{ review.body }}</p>
+    {% if user == review.user and review.user != review.ticket.user %}
+        <span class="button-container">
+            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                <a href="{% url 'review_update' review.id %}">Modifier la critique</a>
+            </button>
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+                <a href="{% url 'review_delete' review.id %}">Supprimer la critique</a>
+            </button>
+        </span>
+        {% include 'review/partials/ticket_snippet_without_reply.html' with ticket=review.ticket %}
+    </section>
+{% elif user == review.user and review.user == review.ticket.user %}
+    <span class="button-container">
+        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+            <a href="{% url 'review_update' review.id %}">Modifier la critique</a>
+        </button>
+        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+            <a href="{% url 'review_delete' review.id %}">Supprimer la critique</a>
+        </button>
+    </span>
+</section>
+{% include 'review/partials/ticket_snippet_without_reply.html' with ticket=review.ticket %}
+{% elif user != review.user and review.user != review.ticket.user %}
+{% include 'review/partials/ticket_snippet_without_buttons.html' with ticket=review.ticket %}
+</section>
+{% elif user != review.user and review.user == review.ticket.user %}
+</section>
+{% include 'review/partials/ticket_snippet_without_buttons.html' with ticket=review.ticket %}
+{% endif %}

@@ -1,46 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Rechercher un utilisateur</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Rechercher</button>
-    </form>
-    <button>
-        <a href="{% url 'home' %}">Retourner à la page d'acceuil</a>
-    </button>
-    <h3>Résultat(s) de la recherche :</h3>
-    <!--Renvoyer une liste de users ()liste de dico-->
-    {% if users %}
-        <ul class="users">
-            {% for user in users %}
-                <li>{{ user.username }}</li>
-                <li>Dernière connexion: {{ user.last_login }}</li>
-                <li>Inscription: {{ user.date_joined }}</li>
-                {% if is_following %}
-                    {% for connection in is_following %}
-                        {% if connection.followed_user.username == user.username %}
-                            <form method="post"
-                                  action="{% url 'unfollow_user' connection.followed_user.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Se désabonner</button>
-                            </form>
-                        {% else %}
-                            <form method="post" action="{% url 'follow_user' user.id %}">
-                                {% csrf_token %}
-                                <button type="submit">Suivre</button>
-                            </form>
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <form method="post" action="{% url 'follow_user' user.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Suivre</button>
-                    </form>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun utilisateur trouvé</p>
-    {% endif %}
+    <h1>Rechercher un utilisateur</h1>
+    <div class="form-container d-flex justify-content-center align-items-center">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.query.label_tag }}
+            {{ form.query }}
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">Rechercher</button>
+            </div>
+        </form>
+    </div>
+    <h2>Résultat(s) de la recherche :</h2>
+    <div>
+        {% if users %}
+            <ul>
+                {% for user in users %}
+                    <li>{{ user.username }}</li>
+                    <li>Dernière connexion: {{ user.last_login }}</li>
+                    <li>Inscription: {{ user.date_joined }}</li>
+                    {% if is_following %}
+                        {% for connection in is_following %}
+                            {% if connection.followed_user.username == user.username %}
+                                <form method="post"
+                                      action="{% url 'unfollow_user' connection.followed_user.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">Se désabonner</button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{% url 'follow_user' user.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-success" type="submit">Suivre</button>
+                                </form>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <form method="post" action="{% url 'follow_user' user.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary" type="submit">Suivre</button>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun utilisateur trouvé</p>
+        {% endif %}
+    </div>
 {% endblock content %}

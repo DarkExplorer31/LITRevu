@@ -1,0 +1,31 @@
+<section class="ticket_element">
+    <p class="ticket_title">{{ ticket.title }}</p>
+    <p class="ticket_description">{{ ticket.description }}</p>
+    {% if ticket.image %}
+        <img src="{{ ticket.image.url }}"
+             alt="Illustration du ticket: '{{ ticket.title }}'"
+             title="Illustration du ticket: '{{ ticket.title }}'"
+             class="ticket-image">
+    {% endif %}
+    {% if user == ticket.user %}
+        <span class="button-container">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                <a href="{% url 'review_only_creation' ticket.id %}">Répondre à ce ticket</a>
+            </button>
+            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                <a href="{% url 'ticket_update' ticket.id %}">Modifier le ticket</a>
+            </button>
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+                <a href="{% url 'delete_ticket' ticket.id %}">Supprimer le ticket</a>
+            </button>
+        </span>
+        <p class="ticket_author">Ticket émis par vous</p>
+        <p class="ticket_creation_date">{{ ticket.time_created }}</p>
+    {% else %}
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            <a href="{% url 'review_only_creation' ticket.id %}">Répondre à ce ticket</a>
+        </button>
+        <p class="ticket_author">Ticket émis par {{ ticket.user }}</p>
+        <p class="ticket_creation_date">{{ ticket.time_created }}</p>
+    {% endif %}
+</section>

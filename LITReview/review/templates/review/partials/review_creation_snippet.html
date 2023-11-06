@@ -1,0 +1,39 @@
+{% if object.ticket and object %}
+    {% include 'review/partials/ticket_snippet_without_buttons.html' with ticket=object.ticket %}
+    <h1>Modifier la critique: {{ object.headline }}</h1>
+    <section class="form-container d-flex justify-content-center align-items-center">
+        <p class="form_error">{{ message }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">Publier</button>
+            </div>
+        </form>
+    </section>
+{% elif ticket %}
+    {% include 'review/partials/ticket_snippet_without_buttons.html' with ticket=ticket %}
+    <h1>Créer la critique</h1>
+    <section class="form-container d-flex justify-content-center align-items-center">
+        <p class="form_error">{{ message }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">Publier</button>
+            </div>
+        </form>
+    </section>
+{% else %}
+    <h1>Créer un ticket et une critique</h1>
+    <section class="form-container d-flex justify-content-center align-items-center">
+        <p class="form_error">{{ message }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ review_with_ticket_form.as_p }}
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">Publier</button>
+            </div>
+        </form>
+    </section>
+{% endif %}

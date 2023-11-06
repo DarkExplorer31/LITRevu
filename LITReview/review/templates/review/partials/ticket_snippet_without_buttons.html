@@ -1,0 +1,17 @@
+<section class="ticket_element_without_button">
+    <p class="ticket_title">{{ ticket.title }}</p>
+    <p class="ticket_description">{{ ticket.description }}</p>
+    {% if ticket.image %}
+        <img src="{{ ticket.image.url }}"
+             alt="Illustration du ticket: '{{ ticket.title }}'"
+             title="Illustration du ticket: '{{ ticket.title }}'"
+             class="ticket-image">
+    {% endif %}
+    {% if user == ticket.user %}
+        <p class="ticket_author">Ticket émis par vous</p>
+        <p class="ticket_creation_date">{{ ticket.time_created }}</p>
+    {% else %}
+        <p class="ticket_author">Ticket émis par {{ ticket.user }}</p>
+        <p class="ticket_creation_date">{{ ticket.time_created }}</p>
+    {% endif %}
+</section>

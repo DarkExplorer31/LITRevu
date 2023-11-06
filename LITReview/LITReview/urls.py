@@ -111,3 +111,4 @@ if settings.DEBUG:
 
 handler404 = "review.views.error_404"
 handler500 = "review.views.error_500"
+handler403 = "review.views.error_403"

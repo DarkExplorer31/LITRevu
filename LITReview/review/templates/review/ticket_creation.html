@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if object %}
-<h2>Modification du ticket: "{{object.title}}"</h2>
-{%else%}
-<h2>Créer un Ticket</h2>
-{%endif%}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Publier</button>
-</form>
-{% if object and user == object.user %}
-<p>Ticket créer le {{object.time_created}} par vous</p>
-{%else%}
-<p>Ticket créer le {{object.time_created}} par {{object.user}}</p>
-{%endif%}
+    {% if object %}
+        <h1>Modification du ticket: "{{ object.title }}"</h1>
+    {% else %}
+        <h1>Créer un Ticket</h1>
+    {% endif %}
+    <section class="form-container d-flex justify-content-center align-items-center">
+        <p class="form_error">{{ message }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">Publier</button>
+            </div>
+        </form>
+    </section>
 {% endblock content %}
