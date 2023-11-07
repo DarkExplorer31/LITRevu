@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Gérer vos abonnements</h2>
-    <div>
+    <h1>Gérer vos abonnements</h1>
+    <section>
         {% if following %}
             {% for follow in following %}
                 <ul>
@@ -21,10 +21,9 @@
                 <a href="{% url 'searching_user' %}">Rechercher un utilisateur</a>
             </p>
         {% endif %}
-    </div>
-    <h2>Visualisé vos abonné</h2>
-    <div>
-        <!--Section ici -->
+    </section>
+    <h1>Visualisé vos abonnés</h1>
+    <section>
         {% if followers %}
             {% for follow in followers %}
                 <ul>
@@ -36,5 +35,5 @@
         {% else %}
             <p>Vous n'avez aucun abonné pour le moment</p>
         {% endif %}
-    </div>
+    </section>
 {% endblock content %}

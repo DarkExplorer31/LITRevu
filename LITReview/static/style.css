@@ -12083,7 +12083,7 @@ h2, .h2 {
   div,
   section {
     min-width: 600px;
-    text-align: justify;
+    text-align: center;
     border: 2px solid #f8f9fa;
     border-radius: 1em;
     margin-left: 300px;

@@ -16,12 +16,28 @@ If you haven't Sass installed on your computer and wish to contribute, you'll ne
 
 1. Download NodeJS from the following link: https://nodejs.org/en and install it.
 (For Linux users):
-Open your terminal and run: ```bash sudo apt install nodejs npm ```
-2. Verify your Node.js and npm versions: ```bash node -v```, ```bash npm -v ```
+Open your terminal and run: 
+```bash 
+sudo apt install nodejs npm 
+```
+2. Verify your Node.js and npm versions: 
+```bash
+ node -v
+ ```
+ ,
+  ```bash
+   npm -v 
+   ```
 3. (Optional, if you use Visual Studio Code) Install "Live Sass Compiler" from https://marketplace.visualstudio.com/items?itemName=ritwickdey.live-sass
 4. Open a terminal
-5. Install sass with: ```bash npm -g install sass ```
-6. Finally, execute the following command to compile your Sass: ```bash npm run sass ``` 
+5. Install sass with: 
+```bash
+ npm -g install sass 
+ ```
+6. Finally, execute the following command to compile your Sass: 
+```bash
+ npm run sass 
+ ``` 
 
 Once you've completed these steps, you can write your CSS style properties in the .\LITRevu\LITReview\static\sass\main.scss file, 
 and it will be compiled into .\LITRevu\LITReview\static\style.css.

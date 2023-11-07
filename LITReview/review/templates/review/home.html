@@ -2,7 +2,7 @@
 {% block content %}
     <h1>Page d'accueil: la page d'actualité de votre profil</h1>
     {% if posts %}
-        <h2 class="home_title">Vos posts</h2>
+        <h2 class="home_title">Votre actualité</h2>
         {% for post in posts %}
             {% if post.content_type == 'REVIEW' %}
                 {% include 'review/partials/review_snippet.html' with review=post %}
