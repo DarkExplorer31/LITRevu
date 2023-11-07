@@ -20,7 +20,6 @@ class HomePage(LoginRequiredMixin, View):
 
     def get(self, request):
         self.user = request.user
-        user_reviews = review_models.Review.objects.filter(user=self.user)
         user_tickets = review_models.Ticket.objects.filter(user=self.user)
         followers = review_models.UserFollows.objects.filter(user=self.user)
         # make the flux with reviews/tickets from user and all followed users
@@ -29,10 +28,9 @@ class HomePage(LoginRequiredMixin, View):
                 user=follower.followed_user
             )
             user_tickets = user_tickets | follower_tickets
-            follower_reviews = review_models.Review.objects.filter(
-                user=follower.followed_user
-            )
-            user_reviews = user_reviews | follower_reviews
+        user_reviews = review_models.Review.objects.filter(
+            ticket__in=user_tickets
+        )
         user_reviews = user_reviews.annotate(
             content_type=Value("REVIEW", models.CharField())
         )

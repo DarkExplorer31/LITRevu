@@ -1,0 +1,379 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+$main-color: #f8f9fa;
+$main-text: #212529;
+$main-bg-div: #e7e7e78c;
+
+@mixin makeBorder($color: $main-color) {
+    border: 2px solid $color;
+    border-radius: 1em;
+}
+
+/*Define all site properties*/
+body {
+    font-family: 'PT Serif', serif;
+    background: $main-color;
+    color: $main-text;
+}
+
+.logo {
+    @include makeBorder(darkblue);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0px;
+}
+
+#logo-container {
+    margin-bottom: 0px;
+}
+
+.navbar {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+.nav-link {
+    color: white;
+    @include makeBorder(darkblue);
+}
+
+.nav-link:hover {
+    color: darkblue;
+    background: darken(white, 20%);
+    @include makeBorder();
+}
+
+#navbarSupportedContent {
+    background-color: darkblue;
+    margin: 0px;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+footer {
+    margin-top: 100px;
+    text-align: right;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 2.3em;
+    text-align: center;
+}
+
+.stars_container {
+    margin-left: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.star,
+.star_empty {
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+/*Define login properties*/
+.login {
+    text-align: center;
+}
+
+.login_error,
+.errorlist {
+    color: red;
+}
+
+/*Define signup properties*/
+.signup,
+.login div {
+    border: 0px;
+    margin: 10px;
+}
+
+/*Define home properties*/
+.home_title {
+    text-align: center;
+    font-size: 32px;
+}
+
+button {
+    margin-left: 10px;
+}
+
+button a {
+    text-decoration: none;
+    color: black;
+}
+
+.button_container button {
+    margin-top: 20px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container {
+    padding: 10px;
+}
+
+.form-container div {
+    border: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px;
+}
+
+div li {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+div button {
+    margin-top: 10px;
+}
+
+div p {
+    text-align: center;
+}
+
+.ticket_title {
+    text-transform: capitalize;
+    margin: 10px;
+    text-decoration: underline;
+    font-size: 25px;
+}
+
+.review_headline {
+    text-transform: capitalize;
+    text-decoration: underline;
+    font-size: 25px;
+}
+
+.ticket_description {
+    text-align: center;
+    font-size: 20px;
+}
+
+.review_body {
+    text-align: center;
+    font-size: 20px;
+    text-align: left;
+}
+
+.review_element {
+    min-width: 900px;
+    margin: 0px;
+}
+
+.ticket_creation_date,
+.ticket_author {
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+    text-align: right;
+
+}
+
+.review_creation_date,
+.review_author {
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+    text-align: right;
+}
+
+#choice-number {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px;
+}
+
+#choice-number p {
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.ticket_element,
+.ticket_element_without_button {
+    background: darken($main-bg-div, 10%);
+    @include makeBorder(darkblue);
+    padding: 10px;
+}
+
+.ticket_element .button_container {
+    padding: 0px;
+}
+
+.reply {
+    text-align: left;
+}
+
+@media (min-width: 1144px) {
+
+    div,
+    section {
+        min-width: 600px;
+        text-align: justify;
+        @include makeBorder;
+        margin-left: 300px;
+        margin-right: 300px;
+        margin-bottom: 20px;
+        padding: 0px;
+        background: $main-bg-div;
+    }
+
+    .review_element {
+        min-width: 600px;
+        margin: 0px;
+    }
+
+    .ticket_element,
+    .ticket_element_without_button {
+        min-width: 400px;
+        margin-left: 250px;
+        margin-right: 250px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .review_element {
+        min-width: 800px;
+        margin-top: 0px;
+        margin-left: 250px;
+        margin-right: 250px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    img {
+        @include makeBorder($main-bg-div);
+
+        &.ticket-image {
+            margin-right: 450px;
+            margin-bottom: 10px;
+            width: 200px;
+            height: 150px;
+        }
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1144px) {
+
+    div,
+    section {
+        min-width: 200px;
+        text-align: justify;
+        @include makeBorder;
+        margin-left: 100px;
+        margin-right: 100px;
+        margin-bottom: 20px;
+        padding: 0px;
+        background: $main-bg-div;
+    }
+
+    .review_element {
+        min-width: 500px;
+        margin: 0px;
+    }
+
+
+    .ticket_element,
+    .ticket_element_without_button {
+        min-width: 300px;
+        margin-left: 150px;
+        margin-right: 150px;
+        margin-bottom: 2px;
+        margin-top: 10px;
+        padding: 10px;
+    }
+
+    .review_element {
+        margin-top: 0px;
+        margin-left: 150px;
+        margin-right: 150px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    img {
+        @include makeBorder($main-bg-div);
+
+        &.ticket-image {
+            margin-left: 20px;
+            margin-right: 250px;
+            margin-bottom: 10px;
+            width: 150px;
+            height: 125px;
+        }
+    }
+}
+
+@media (max-width: 769px) {
+    .logo {
+        display: none;
+    }
+
+    img {
+        @include makeBorder($main-bg-div);
+
+        &.ticket-image {
+            margin-left: 20px;
+            margin-right: 150px;
+            margin-bottom: 10px;
+            width: 150px;
+            height: 125px;
+        }
+    }
+
+    div,
+    section {
+        min-width: 300px;
+        text-align: justify;
+        @include makeBorder;
+        margin-bottom: 20px;
+        padding: 0px;
+        background: $main-bg-div;
+    }
+
+
+    .ticket_element,
+    .ticket_element_without_button {
+        margin-right: 200px;
+        margin-bottom: 2px;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .review_element {
+        margin-top: 0px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .navbar {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
