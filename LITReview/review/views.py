@@ -21,16 +21,14 @@ class HomePage(LoginRequiredMixin, View):
     def get(self, request):
         self.user = request.user
         user_tickets = review_models.Ticket.objects.filter(user=self.user)
-        followers = review_models.UserFollows.objects.filter(user=self.user)
+        following = review_models.UserFollows.objects.filter(user=self.user)
         # make the flux with reviews/tickets from user and all followed users
-        for follower in followers:
-            follower_tickets = review_models.Ticket.objects.filter(
-                user=follower.followed_user
+        for followed in following:
+            followed_tickets = review_models.Ticket.objects.filter(
+                user=followed.followed_user
             )
-            user_tickets = user_tickets | follower_tickets
-        user_reviews = review_models.Review.objects.filter(
-            ticket__in=user_tickets
-        )
+            user_tickets = user_tickets | followed_tickets
+        user_reviews = review_models.Review.objects.filter(ticket__in=user_tickets)
         user_reviews = user_reviews.annotate(
             content_type=Value("REVIEW", models.CharField())
         )
@@ -247,7 +245,9 @@ class SearchUser(LoginRequiredMixin, FormView):
                 "users": users,
                 "is_following": is_following,
             }
-        return render(self.request, self.template_name, context)
+            return render(self.request, self.template_name, context)
+        else:
+            return self.form_invalid(form)
 
 
 class FollowUser(LoginRequiredMixin, View):

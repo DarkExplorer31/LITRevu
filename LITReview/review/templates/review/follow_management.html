@@ -27,9 +27,9 @@
         {% if followers %}
             {% for follow in followers %}
                 <ul>
-                    <li>{{ user.username }}</li>
-                    <li>Dernière connexion: {{ user.last_login }}</li>
-                    <li>Inscription: {{ user.date_joined }}</li>
+                    <li>{{ follow.user.username }}</li>
+                    <li>Dernière connexion: {{ follow.user.last_login }}</li>
+                    <li>Inscription: {{ follow.user.date_joined }}</li>
                 </ul>
             {% endfor %}
         {% else %}

@@ -9,10 +9,10 @@
 - [License](#license)
 
 ## Prerequisites
-This project use Sass and Bootstrap.
+This project uses Sass and Bootstrap.
 The Bootstrap files are located in .\LITRevu\LITReview\static\sass\node_modules\bootstrap and are importing into main.scss.
 
-If you haven't Sass installed on your computer and wish to contribute, you'll need to have npm installed. Here are the steps:
+If you don't have Sass installed on your computer and wish to contribute, you'll need to have npm installed. Here are the steps:
 
 1. Download NodeJS from the following link: https://nodejs.org/en and install it.
 (For Linux users):
